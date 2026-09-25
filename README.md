@@ -10,16 +10,16 @@ Beacon files are executable source files containing inline test directives. Here
 ```python
 numbers = [10, 20, 30];
 print(numbers[0]);
-//beacon: expect 10
+#beacon: expect 10
 
 print(numbers[1]);
-//beacon: expect 20
+#beacon: expect 20
 
 let has_thirty = 30 in numbers;
 print(has_thirty);
-//beacon: expect true
+#beacon: expect true
 
-//beacon: exit 0
+#beacon: exit 0
 ```
 
 ## Getting Started
