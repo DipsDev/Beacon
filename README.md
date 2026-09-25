@@ -8,16 +8,16 @@ Beacon allows you to embed test specifications directly inside source files usin
 
 Beacon files are executable source files containing inline test directives. Here is an example testing array creation, indexing, and membership:
 ```python
-numbers = [10, 20, 30];
-print(numbers[0]);
+numbers = [10, 20, 30]
+print(numbers[0])
 #beacon: expect 10
 
-print(numbers[1]);
+print(numbers[1])
 #beacon: expect 20
 
-let has_thirty = 30 in numbers;
-print(has_thirty);
-#beacon: expect true
+has_thirty = 30 in numbers
+print(has_thirty)
+#beacon: expect True
 
 #beacon: exit 0
 ```
