@@ -8,9 +8,9 @@ import (
 )
 
 func main() {
-	commentPrefix := flag.String("cp", "//", "The comment token used (default: //)")
-	executablePath := flag.String("x", "", "The path to the compiler executable (required)")
-	testDirPath := flag.String("t", "", "The path to the test directory (required)")
+	commentPrefix := flag.String("comment", "//", "The comment token used (default: //)")
+	executablePath := flag.String("executable", "", "The path to the compiler executable (required)")
+	testDirPath := flag.String("dir", "", "The path to the test directory (required)")
 
 	flag.Parse()
 

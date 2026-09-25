@@ -46,6 +46,12 @@ func NewAssertion(action Action, expected string, line int) *Assertion {
 }
 
 func (a *Assertion) expect(ctx Context) AssertResult {
+	if len(ctx.Output) <= ctx.Index {
+		return AssertResult{
+			Type: AssertResultSkipped,
+			Err:  fmt.Errorf("not enough output lines given"),
+		}
+	}
 	if ctx.Output[ctx.Index] != a.ExpectedValue {
 		return resultFromError(fmt.Errorf("expected %s but got %s", a.ExpectedValue, ctx.Output))
 	}
