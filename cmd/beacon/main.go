@@ -1,7 +1,7 @@
 package main
 
 import (
-	"beacon/internal"
+	"beacon/internal/runner"
 	"flag"
 	"fmt"
 	"os"
@@ -15,23 +15,23 @@ func main() {
 	flag.Parse()
 
 	if *executablePath == "" {
-		fmt.Println("Error: --executable-path (-x) is required.")
+		fmt.Println("Error: --executable is required.")
 		flag.Usage()
 		os.Exit(1)
 	}
 
 	if *testDirPath == "" {
-		fmt.Println("Error: --test-dir (-t) is required.")
+		fmt.Println("Error: --dir is required.")
 		flag.Usage()
 		os.Exit(1)
 	}
 
-	cfg := internal.Config{
+	cfg := runner.Config{
 		ExecutablePath: *executablePath,
 		CommentPrefix:  *commentPrefix,
 		TestDirPath:    *testDirPath,
 	}
 
-	exitCode := internal.RunTests(cfg)
+	exitCode := runner.RunTests(cfg)
 	os.Exit(exitCode)
 }
