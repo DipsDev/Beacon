@@ -10,14 +10,26 @@ type Expect struct {
 }
 
 func (e *Expect) Assert(ctx *Context) error {
-	actual := ctx.Output[*ctx.OutputIdx]
+	if *ctx.OutputIdx >= len(ctx.Output) {
+		return fmt.Errorf("too much outputs")
 
-	if actual != e.ExpectedValue {
-		return fmt.Errorf("expected '%s' but got '%s'", e.ExpectedValue, actual)
 	}
 
+	actual := ctx.Output[*ctx.OutputIdx]
 	*ctx.OutputIdx++
+
+	if actual != e.ExpectedValue {
+		return &ErrUnmatched{
+			Expected: e.ExpectedValue,
+			Actual:   actual,
+		}
+	}
+
 	return nil
+}
+
+func (e *Expect) String() string {
+	return fmt.Sprintf("expect %s", e.ExpectedValue)
 }
 
 func newExpect(args []string) (Assertion, error) {

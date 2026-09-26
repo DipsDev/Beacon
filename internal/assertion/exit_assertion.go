@@ -11,11 +11,18 @@ type Exit struct {
 
 func (e *Exit) Assert(ctx *Context) error {
 	if ctx.ExitStatus != e.ExpectedValue {
-		return fmt.Errorf("expected status code %d but got %d", e.ExpectedValue, ctx.ExitStatus)
+		return &ErrUnmatched{
+			Expected: e.ExpectedValue,
+			Actual:   ctx.ExitStatus,
+		}
 	}
 
 	*ctx.OutputIdx++
 	return nil
+}
+
+func (e *Exit) String() string {
+	return fmt.Sprintf("exit %d", e.ExpectedValue)
 }
 
 func newExit(args []string) (Assertion, error) {

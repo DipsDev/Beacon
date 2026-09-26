@@ -10,8 +10,15 @@ type ParseState struct {
 
 func (s *ParseState) currentGroup() *Group {
 	if len(s.File.Groups) == 0 {
-		s.File.Groups = append(s.File.Groups, Group{})
+		return s.newGroup()
 	}
+	return &s.File.Groups[len(s.File.Groups)-1]
+}
+
+func (s *ParseState) newGroup() *Group {
+	s.File.Groups = append(s.File.Groups, Group{
+		Description: "unnamed_group",
+	})
 	return &s.File.Groups[len(s.File.Groups)-1]
 }
 
@@ -33,4 +40,5 @@ func registerDirective(keyword string, parser DirectiveParser) {
 func init() {
 	registerAssertionDirective("expect")
 	registerAssertionDirective("exit")
+	registerDirective("it", newItDirective)
 }

@@ -17,6 +17,7 @@ func defaultSettings() *FileSettings {
 
 type Group struct {
 	Description string
+	Line        int
 	Assertions  []assertion.Assertion
 }
 

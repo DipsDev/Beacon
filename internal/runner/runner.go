@@ -3,6 +3,7 @@ package runner
 import (
 	"beacon/internal/assertion"
 	"beacon/internal/parser"
+	"beacon/internal/reporter"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -32,13 +33,9 @@ func RunTests(cfg Config) int {
 
 	sort.Strings(testFiles)
 
-	fmt.Println("running beacon tests...\n" + strings.Repeat("-", 40))
-
-	assertionsFailed := 0
-	totalAssertions := 0
+	c := reporter.NewConsole()
 
 	for _, testFile := range testFiles {
-		// Inside your test execution loop:
 		file, err := parser.ParseTestFile(testFile, cfg.CommentPrefix)
 		if err != nil {
 			fmt.Printf("error parsing test file: %s\n, %v", testFile, err)
@@ -60,21 +57,19 @@ func RunTests(cfg Config) int {
 			OutputIdx: &outputIndex,
 		}
 
+		c.AddFile(*file)
 		for _, group := range file.Groups {
+
+			c.AddGroup(group)
 			for _, groupAssertion := range group.Assertions {
 				err = groupAssertion.Assert(&ctx)
-				if err != nil {
-					assertionsFailed++
-					fmt.Printf("test failed: %v\n", err)
-				}
+				c.AddAssertion(groupAssertion, err)
 			}
 
 		}
-		fmt.Println()
-	}
 
-	fmt.Println(strings.Repeat("-", 40))
-	fmt.Printf("finished running test suites. assertion failed %d/%d", assertionsFailed, totalAssertions)
+	}
+	c.Write()
 
 	return 0
 }
